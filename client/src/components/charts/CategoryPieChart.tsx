@@ -1,5 +1,6 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { CategoryBreakdown } from '../../types/expense.types';
+import { formatCurrency, convertCurrency } from '../../utils/formatters';
 
 interface CategoryPieChartProps {
   data: CategoryBreakdown[];
@@ -7,18 +8,11 @@ interface CategoryPieChartProps {
 }
 
 export default function CategoryPieChart({ data, currency = 'USD' }: CategoryPieChartProps) {
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
+  const formatValue = (value: number) => formatCurrency(value, currency, true);
 
   const chartData = data.map((item) => ({
     name: item.name,
-    value: Number(item.value),
+    value: convertCurrency(Number(item.value), currency),
     color: item.color,
   }));
 
@@ -50,7 +44,7 @@ export default function CategoryPieChart({ data, currency = 'USD' }: CategoryPie
             ))}
           </Pie>
           <Tooltip
-            formatter={(value: number) => [formatCurrency(value), 'Amount']}
+            formatter={(value: number) => [formatValue(value), 'Amount']}
             contentStyle={{
               backgroundColor: '#fff',
               border: '1px solid #E5E7EB',
@@ -73,7 +67,7 @@ export default function CategoryPieChart({ data, currency = 'USD' }: CategoryPie
               <span className="text-gray-600 truncate max-w-[120px]">{item.name}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-medium text-gray-900">{formatCurrency(item.value)}</span>
+              <span className="font-medium text-gray-900">{formatValue(item.value)}</span>
               <span className="text-gray-400 text-xs">
                 ({((item.value / total) * 100).toFixed(0)}%)
               </span>

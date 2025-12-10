@@ -8,7 +8,8 @@
       "Bash(netstat:*)",
       "Bash(findstr:*)",
       "Bash(npm run dev:client:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(npm run seed:*)"
     ],
     "deny": [],
     "ask": []

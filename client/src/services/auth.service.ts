@@ -29,7 +29,7 @@ export async function logout(): Promise<void> {
 
 export async function getCurrentUser(): Promise<User | null> {
   try {
-    const response = await api.get<{ success: boolean; data: User }>('/users/me');
+    const response = await api.get<{ success: boolean; data: User }>('/users/profile');
     return response.data.data;
   } catch {
     return null;

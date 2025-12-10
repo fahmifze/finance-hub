@@ -8,6 +8,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { DailyTotal } from '../../types/expense.types';
+import { formatCurrency, convertCurrency, getCurrencySymbol } from '../../utils/formatters';
 
 interface DailyBarChartProps {
   data: DailyTotal[];
@@ -15,18 +16,11 @@ interface DailyBarChartProps {
 }
 
 export default function DailyBarChart({ data, currency = 'USD' }: DailyBarChartProps) {
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
+  const formatValue = (value: number) => formatCurrency(value, currency, true);
 
   const chartData = data.map((item) => ({
     name: item.day.toString(),
-    total: Number(item.total),
+    total: convertCurrency(Number(item.total), currency),
   }));
 
   if (chartData.length === 0) {
@@ -52,11 +46,11 @@ export default function DailyBarChart({ data, currency = 'USD' }: DailyBarChartP
           axisLine={false}
           tickLine={false}
           tick={{ fill: '#9CA3AF', fontSize: 10 }}
-          tickFormatter={(value) => `$${value}`}
+          tickFormatter={(value) => `${getCurrencySymbol(currency)}${value}`}
           width={40}
         />
         <Tooltip
-          formatter={(value: number) => [formatCurrency(value), 'Spent']}
+          formatter={(value: number) => [formatValue(value), 'Spent']}
           labelFormatter={(label) => `Day ${label}`}
           contentStyle={{
             backgroundColor: '#fff',

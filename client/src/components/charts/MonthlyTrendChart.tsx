@@ -8,6 +8,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { MonthlyTrendData } from '../../types/expense.types';
+import { formatCurrency, convertCurrency } from '../../utils/formatters';
 
 interface MonthlyTrendChartProps {
   data: MonthlyTrendData[];
@@ -15,19 +16,13 @@ interface MonthlyTrendChartProps {
 }
 
 export default function MonthlyTrendChart({ data, currency = 'USD' }: MonthlyTrendChartProps) {
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency,
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
-
+  // Convert data to display currency
   const chartData = data.map((item) => ({
     name: item.month,
-    total: Number(item.total),
+    total: convertCurrency(Number(item.total), currency),
   }));
+
+  const formatValue = (value: number) => formatCurrency(value, currency, true);
 
   if (chartData.length === 0) {
     return (
@@ -57,10 +52,10 @@ export default function MonthlyTrendChart({ data, currency = 'USD' }: MonthlyTre
           axisLine={false}
           tickLine={false}
           tick={{ fill: '#6B7280', fontSize: 12 }}
-          tickFormatter={(value) => formatCurrency(value)}
+          tickFormatter={(value) => formatValue(value)}
         />
         <Tooltip
-          formatter={(value: number) => [formatCurrency(value), 'Total']}
+          formatter={(value: number) => [formatValue(value), 'Total']}
           contentStyle={{
             backgroundColor: '#fff',
             border: '1px solid #E5E7EB',
