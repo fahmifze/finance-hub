@@ -5,6 +5,7 @@ import { useBudgetAlerts } from '../hooks/useBudgets';
 import { useIncomeStats } from '../hooks/useIncomes';
 import { useInsights } from '../hooks/useInsights';
 import { useUpcomingRecurring } from '../hooks/useRecurring';
+import { useExchangeRates } from '../hooks/useExchangeRates';
 import { Link } from 'react-router-dom';
 import { MonthlyTrendChart, CategoryPieChart, DailyBarChart } from '../components/charts';
 import { LoadingSection } from '../components/ui';
@@ -20,6 +21,7 @@ export default function Dashboard() {
   const { data: incomeStats } = useIncomeStats();
   const { data: insights, isLoading: insightsLoading } = useInsights();
   const { data: upcomingRecurring } = useUpcomingRecurring(7);
+  const { data: exchangeRates, isLoading: exchangeRatesLoading } = useExchangeRates();
 
   const totalCategories = categories?.length || 0;
   const customCategories = categories?.filter((c) => !c.isDefault).length || 0;
@@ -79,6 +81,54 @@ export default function Dashboard() {
           <p className="text-xs opacity-75 mt-1">{totalCategories} categories ({customCategories} custom)</p>
         </div>
       </div>
+
+      {/* Exchange Rates Widget */}
+      {exchangeRates && (
+        <div className="card mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Exchange Rates</h3>
+            <span className="text-xs text-gray-500 dark:text-gray-400">
+              Base: {exchangeRates.base} | Updated: {new Date(exchangeRates.lastUpdated).toLocaleTimeString()}
+            </span>
+          </div>
+          {exchangeRatesLoading ? (
+            <div className="flex justify-center py-4">
+              <div className="animate-spin w-6 h-6 border-2 border-primary-500 border-t-transparent rounded-full"></div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-9 gap-3">
+              {Object.entries(exchangeRates.rates)
+                .filter(([code]) => code !== exchangeRates.base)
+                .map(([code, rate]) => {
+                  const userRate = currency !== 'USD' && exchangeRates.rates[currency]
+                    ? rate / exchangeRates.rates[currency]
+                    : rate;
+                  return (
+                    <div
+                      key={code}
+                      className={`p-3 rounded-lg text-center ${
+                        code === currency
+                          ? 'bg-primary-100 dark:bg-primary-900/30 border-2 border-primary-500'
+                          : 'bg-gray-50 dark:bg-gray-700/50'
+                      }`}
+                    >
+                      <p className="font-bold text-gray-900 dark:text-white">{code}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        {currency === 'USD'
+                          ? rate.toFixed(code === 'JPY' || code === 'INR' ? 2 : 4)
+                          : userRate.toFixed(code === 'JPY' || code === 'INR' ? 2 : 4)
+                        }
+                      </p>
+                    </div>
+                  );
+                })}
+            </div>
+          )}
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-3 text-center">
+            Rates shown relative to 1 {currency}
+          </p>
+        </div>
+      )}
 
       {/* Budget Alerts & Insights Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">

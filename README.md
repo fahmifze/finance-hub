@@ -11,18 +11,21 @@ A full-stack expense management application built with React, TypeScript, Expres
 - Expense tracking with category assignment
 - Income tracking with source categories
 - Budget planning with spending alerts
+- Dark/Light mode theme toggle
 
 **Financial Tools**
 - Recurring transactions (expenses and income)
 - Smart insights and spending analysis
 - Net savings calculation
 - Multi-currency support (10 currencies)
+- Live exchange rates (via Open Exchange Rates API)
 
 **Visualization**
 - Monthly spending trends
 - Category breakdown charts
 - Daily spending patterns
 - Budget progress tracking
+- Exchange rate widget
 
 **Data Management**
 - Search and filter by date, category, amount
@@ -98,21 +101,31 @@ npm install
 
 ### Environment Setup
 
-Create `server/.env`:
+Create `.env` in the project root:
 
 ```env
+# Server
+NODE_ENV=development
+PORT=3001
+
+# Database (MySQL)
 DB_HOST=localhost
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=your_password
 DB_NAME=expense_tracker
 
-JWT_SECRET=your-jwt-secret
-JWT_REFRESH_SECRET=your-refresh-secret
+# JWT (use strong random strings in production)
+JWT_ACCESS_SECRET=your-access-secret-min-32-chars
+JWT_REFRESH_SECRET=your-refresh-secret-min-32-chars
+JWT_ACCESS_EXPIRY=15m
+JWT_REFRESH_EXPIRY=7d
 
-NODE_ENV=development
-PORT=3001
+# CORS
 CLIENT_URL=http://localhost:5174
+
+# Exchange Rate API (optional - get free key at https://openexchangerates.org/signup/free)
+EXCHANGE_RATE_API_KEY=your-api-key-here
 ```
 
 ### Database Setup
@@ -201,6 +214,13 @@ npm run dev:client    # localhost:5174
 | GET | /api/insights | Get insights |
 | GET | /api/insights/summary | Financial summary |
 
+### Exchange Rates
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /api/exchange-rates | Get latest rates |
+| GET | /api/exchange-rates/convert | Convert currency |
+| GET | /api/exchange-rates/status | Rate limit status |
+
 ### Other
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -227,6 +247,39 @@ USD, EUR, GBP, JPY, MYR, SGD, AUD, CAD, INR, CNY
 | npm run dev:server | Backend only |
 | npm run build | Production build |
 | npm run seed | Seed demo data |
+
+---
+
+## Security Considerations
+
+This is an open-source project. When deploying or forking:
+
+**Environment Variables**
+- Never commit `.env` files (already in `.gitignore`)
+- Use strong, unique JWT secrets (32+ characters)
+- Rotate API keys if exposed
+
+**Production Deployment**
+- Use HTTPS only
+- Set `NODE_ENV=production`
+- Use environment variables for all secrets
+- Consider rate limiting for API endpoints
+- Enable CORS only for your domain
+
+**API Keys**
+- The exchange rate feature requires an API key from [Open Exchange Rates](https://openexchangerates.org)
+- Free tier: 1,000 requests/month
+- The app rate-limits to 30 requests/day with 1-hour caching
+
+**Database**
+- Use a non-root MySQL user in production
+- Enable MySQL SSL for remote connections
+- Regular backups recommended
+
+**Authentication**
+- Passwords are hashed with bcrypt
+- JWT tokens expire (access: 15m, refresh: 7d)
+- Refresh tokens are stored securely
 
 ---
 

@@ -2,12 +2,91 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-gray-50 text-gray-900 antialiased transition-colors duration-200;
-}
+@layer base {
+  :root {
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: #f9fafb;
+    --color-bg-tertiary: #f3f4f6;
+    --color-border: #e5e7eb;
+    --color-border-light: #f3f4f6;
+    --color-text-primary: #111827;
+    --color-text-secondary: #374151;
+    --color-text-muted: #6b7280;
+    --color-text-light: #9ca3af;
+  }
 
-html.dark body {
-  @apply bg-gray-900 text-gray-100;
+  :root.dark {
+    --color-bg-primary: #1f2937;
+    --color-bg-secondary: #111827;
+    --color-bg-tertiary: #374151;
+    --color-border: #374151;
+    --color-border-light: #4b5563;
+    --color-text-primary: #f9fafb;
+    --color-text-secondary: #e5e7eb;
+    --color-text-muted: #9ca3af;
+    --color-text-light: #6b7280;
+  }
+
+  body {
+    @apply antialiased transition-colors duration-200;
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+  }
+
+  /* Override common text colors to use CSS variables */
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-text-primary);
+  }
+
+  /* Table styling */
+  th {
+    color: var(--color-text-muted);
+  }
+
+  td {
+    color: var(--color-text-secondary);
+  }
+
+  /* Border colors */
+  table tr {
+    border-color: var(--color-border);
+  }
+
+  /* Fix text colors for elements using dark: classes that don't work */
+  .text-gray-900 {
+    color: var(--color-text-primary) !important;
+  }
+  .text-gray-800 {
+    color: var(--color-text-primary) !important;
+  }
+  .text-gray-700 {
+    color: var(--color-text-secondary) !important;
+  }
+  .text-gray-600 {
+    color: var(--color-text-muted) !important;
+  }
+  .text-gray-500 {
+    color: var(--color-text-muted) !important;
+  }
+  .text-gray-400 {
+    color: var(--color-text-light) !important;
+  }
+
+  /* Fix background colors */
+  .bg-gray-50 {
+    background-color: var(--color-bg-secondary) !important;
+  }
+  .bg-gray-100 {
+    background-color: var(--color-bg-tertiary) !important;
+  }
+
+  /* Fix border colors */
+  .border-gray-200 {
+    border-color: var(--color-border) !important;
+  }
+  .border-gray-100 {
+    border-color: var(--color-border-light) !important;
+  }
 }
 
 @layer components {
@@ -20,7 +99,12 @@ html.dark body {
   }
 
   .btn-secondary {
-    @apply btn bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600;
+    @apply btn focus:ring-gray-500;
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+  }
+  .btn-secondary:hover {
+    filter: brightness(0.95);
   }
 
   .btn-danger {
@@ -28,7 +112,13 @@ html.dark body {
   }
 
   .input {
-    @apply w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:border-primary-500 focus:ring-1 focus:ring-primary-500 focus:outline-none bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-gray-100 dark:placeholder-gray-500;
+    @apply w-full px-3 py-2 rounded-lg shadow-sm focus:border-primary-500 focus:ring-1 focus:ring-primary-500 focus:outline-none;
+    background-color: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+  }
+  .input::placeholder {
+    color: var(--color-text-muted);
   }
 
   .input-error {
@@ -36,11 +126,14 @@ html.dark body {
   }
 
   .card {
-    @apply bg-white rounded-xl shadow-sm border border-gray-200 p-6 dark:bg-gray-800 dark:border-gray-700;
+    @apply rounded-xl shadow-sm p-6 transition-colors duration-200;
+    background-color: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
   }
 
   .label {
-    @apply block text-sm font-medium text-gray-700 mb-1 dark:text-gray-300;
+    @apply block text-sm font-medium mb-1;
+    color: var(--color-text-secondary);
   }
 }
 

@@ -9,7 +9,8 @@
       "Bash(findstr:*)",
       "Bash(npm run dev:client:*)",
       "Bash(curl:*)",
-      "Bash(npm run seed:*)"
+      "Bash(npm run seed:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

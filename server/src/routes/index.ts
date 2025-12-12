@@ -8,6 +8,7 @@ import budgetRoutes from './budget.routes';
 import incomeRoutes from './income.routes';
 import recurringRoutes from './recurring.routes';
 import insightsRoutes from './insights.routes';
+import exchangeRateRoutes from './exchangeRate.routes';
 
 const router = Router();
 
@@ -30,5 +31,6 @@ router.use('/budgets', budgetRoutes);
 router.use('/incomes', incomeRoutes);
 router.use('/recurring', recurringRoutes);
 router.use('/insights', insightsRoutes);
+router.use('/exchange-rates', exchangeRateRoutes);
 
 export default router;
