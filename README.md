@@ -1,6 +1,6 @@
 # Finance Hub
 
-A full-stack expense management application built with React, TypeScript, Express, and MySQL.
+A full-stack personal finance application built with React, TypeScript, Express, and MySQL.
 
 ---
 
@@ -18,14 +18,34 @@ A full-stack expense management application built with React, TypeScript, Expres
 - Smart insights and spending analysis
 - Net savings calculation
 - Multi-currency support (10 currencies)
+- Live exchange rates with currency converter
+
+**Stock Market**
+- Real-time stock quotes (via Finnhub API)
+- Stock watchlist management
+- Portfolio tracking with P/L calculation
+- Price alerts (above/below thresholds)
+- Interactive price charts with time ranges
+- Stock detail pages with company info
+
+**Financial News**
+- Live financial news feed (via Marketaux API)
+- Filter by category and sentiment
+- Save articles for later reading
+- News widget on dashboard
+
+**Currency Exchange**
 - Live exchange rates (via Open Exchange Rates API)
+- Currency converter with 10+ currencies
+- Exchange rates table with base currency selection
+- Quick reference rate cards
 
 **Visualization**
 - Monthly spending trends
 - Category breakdown charts
 - Daily spending patterns
 - Budget progress tracking
-- Exchange rate widget
+- Stock price charts (area/candlestick)
 
 **Data Management**
 - Search and filter by date, category, amount
@@ -41,6 +61,7 @@ A full-stack expense management application built with React, TypeScript, Expres
 | Frontend | React 18, TypeScript, Vite, Tailwind CSS, React Query, Recharts |
 | Backend | Node.js, Express, TypeScript, MySQL, JWT, Zod |
 | Database | MySQL 8+ with raw SQL |
+| APIs | Finnhub (stocks), Marketaux (news), Open Exchange Rates (currency) |
 
 ---
 
@@ -53,11 +74,14 @@ expense-tracker/
 │       ├── components/
 │       │   ├── budget/
 │       │   ├── charts/
+│       │   ├── currency/
 │       │   ├── expenses/
 │       │   ├── income/
 │       │   ├── insights/
 │       │   ├── layout/
+│       │   ├── news/
 │       │   ├── recurring/
+│       │   ├── stocks/
 │       │   └── ui/
 │       ├── context/
 │       ├── hooks/
@@ -124,8 +148,14 @@ JWT_REFRESH_EXPIRY=7d
 # CORS
 CLIENT_URL=http://localhost:5174
 
-# Exchange Rate API (optional - get free key at https://openexchangerates.org/signup/free)
+# Exchange Rate API (https://openexchangerates.org/signup)
 EXCHANGE_RATE_API_KEY=your-api-key-here
+
+# Financial News API (https://www.marketaux.com/)
+MARKETAUX_API_KEY=your-api-key-here
+
+# Stock Market API (https://finnhub.io/)
+FINNHUB_API_KEY=your-api-key-here
 ```
 
 ### Database Setup
@@ -214,6 +244,48 @@ npm run dev:client    # localhost:5174
 | GET | /api/insights | Get insights |
 | GET | /api/insights/summary | Financial summary |
 
+### Stocks
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /api/stocks/quote/:symbol | Get stock quote |
+| GET | /api/stocks/quotes | Get multiple quotes |
+| GET | /api/stocks/search | Search stocks |
+| GET | /api/stocks/profile/:symbol | Company profile |
+| GET | /api/stocks/candles/:symbol | Price history |
+| GET | /api/stocks/market-status | Market open/closed |
+| GET | /api/stocks/market-overview | Top stocks |
+
+### Watchlist
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /api/stocks/watchlist | Get watchlist |
+| POST | /api/stocks/watchlist | Add to watchlist |
+| DELETE | /api/stocks/watchlist/:symbol | Remove from watchlist |
+
+### Portfolio
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /api/stocks/portfolio | Get holdings |
+| GET | /api/stocks/portfolio/summary | Portfolio summary |
+| POST | /api/stocks/portfolio/transaction | Add transaction |
+| GET | /api/stocks/portfolio/:holdingId/transactions | Transaction history |
+
+### Price Alerts
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /api/stocks/alerts | List alerts |
+| POST | /api/stocks/alerts | Create alert |
+| PATCH | /api/stocks/alerts/:id/toggle | Toggle alert |
+| DELETE | /api/stocks/alerts/:id | Delete alert |
+
+### News
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /api/news | Get news feed |
+| GET | /api/news/saved | Get saved articles |
+| POST | /api/news/saved | Save article |
+| DELETE | /api/news/saved/:uuid | Remove saved |
+
 ### Exchange Rates
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -250,6 +322,16 @@ USD, EUR, GBP, JPY, MYR, SGD, AUD, CAD, INR, CNY
 
 ---
 
+## API Rate Limits & Caching
+
+| API | Free Tier | App Caching |
+|-----|-----------|-------------|
+| Open Exchange Rates | 1,000 req/month | 1 hour cache, 30 req/day limit |
+| Marketaux | 100 req/day | 15 min cache |
+| Finnhub | 60 req/min | 1 min quotes, 5 min candles, 24h profiles |
+
+---
+
 ## Security Considerations
 
 This is an open-source project. When deploying or forking:
@@ -267,9 +349,9 @@ This is an open-source project. When deploying or forking:
 - Enable CORS only for your domain
 
 **API Keys**
-- The exchange rate feature requires an API key from [Open Exchange Rates](https://openexchangerates.org)
-- Free tier: 1,000 requests/month
-- The app rate-limits to 30 requests/day with 1-hour caching
+- Get free API keys from the respective providers
+- The app implements caching to minimize API usage
+- Rate limiting is built-in to stay within free tiers
 
 **Database**
 - Use a non-root MySQL user in production
