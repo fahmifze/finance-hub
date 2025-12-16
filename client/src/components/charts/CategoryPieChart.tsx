@@ -1,4 +1,4 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { CategoryBreakdown } from '../../types/expense.types';
 import { formatCurrency, convertCurrency } from '../../utils/formatters';
 

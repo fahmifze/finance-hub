@@ -13,8 +13,6 @@ const EXCHANGE_RATES: Record<string, number> = {
   CNY: 7.24,
 };
 
-// Base currency for all stored amounts (expenses are stored in USD)
-const BASE_CURRENCY = 'USD';
 
 /**
  * Convert amount from base currency (USD) to target currency

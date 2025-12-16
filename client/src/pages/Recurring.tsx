@@ -12,14 +12,14 @@ import { useAuth } from '../context/AuthContext';
 import { useToast, LoadingSection } from '../components/ui';
 import RecurringForm from '../components/recurring/RecurringForm';
 import RecurringList from '../components/recurring/RecurringList';
-import { formatCurrency, formatDate } from '../utils/formatters';
+import { formatCurrency } from '../utils/formatters';
 
 export default function Recurring() {
   const { user } = useAuth();
   const { showSuccess, showError } = useToast();
   const currency = user?.currency || 'MYR';
 
-  const [filters, setFilters] = useState<RecurringFilters>({});
+  const [filters] = useState<RecurringFilters>({});
   const [typeFilter, setTypeFilter] = useState<string>('');
   const [activeFilter, setActiveFilter] = useState<string>('');
 
