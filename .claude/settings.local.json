@@ -10,7 +10,13 @@
       "Bash(npm run dev:client:*)",
       "Bash(curl:*)",
       "Bash(npm run seed:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(dir \"c:\\laragon\\www\\Daily-Expense-Management-System-master\\server\")",
+      "Bash(dir \"c:\\laragon\\www\\Daily-Expense-Management-System-master\\client\")",
+      "Bash(dir \"c:\\laragon\\www\\Daily-Expense-Management-System-master\\database\")",
+      "Bash(npx tsc:*)",
+      "Bash(mysql:*)",
+      "Bash(npm run migrate:*)"
     ],
     "deny": [],
     "ask": []

@@ -12,6 +12,7 @@ const navItems = [
   { path: '/income', label: 'Income', icon: 'I' },
   { path: '/budget', label: 'Budget', icon: 'B' },
   { path: '/recurring', label: 'Recurring', icon: 'R' },
+  { path: '/news', label: 'News', icon: 'N' },
   { path: '/categories', label: 'Categories', icon: 'C' },
   { path: '/profile', label: 'Profile', icon: 'P' },
 ];
@@ -53,7 +54,7 @@ export default function Layout({ children }: LayoutProps) {
       <header className={`shadow-sm border-b transition-colors ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <Link to="/" className="text-2xl font-bold text-primary-600">
-            Expense Tracker
+            Finance Hub
           </Link>
           <div className="flex items-center gap-3">
             <ThemeToggle />
@@ -101,7 +102,7 @@ export default function Layout({ children }: LayoutProps) {
           {/* Mobile Navigation */}
           <div className={`md:hidden fixed bottom-0 left-0 right-0 border-t px-4 py-2 z-40 transition-colors ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
             <div className="flex justify-around">
-              {navItems.slice(0, 5).map((item) => (
+              {navItems.slice(0, 6).map((item) => (
                 <Link
                   key={item.path}
                   to={item.path}

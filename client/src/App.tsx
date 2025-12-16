@@ -13,6 +13,7 @@ import Profile from './pages/Profile';
 import Budget from './pages/Budget';
 import Income from './pages/Income';
 import Recurring from './pages/Recurring';
+import News from './pages/News';
 
 // Redirect authenticated users away from login/register
 function PublicRoute({ children }: { children: React.ReactNode }) {
@@ -113,6 +114,14 @@ function AppRoutes() {
         element={
           <ProtectedWithLayout>
             <Recurring />
+          </ProtectedWithLayout>
+        }
+      />
+      <Route
+        path="/news"
+        element={
+          <ProtectedWithLayout>
+            <News />
           </ProtectedWithLayout>
         }
       />
