@@ -19,8 +19,10 @@ export default function SavingsChart({ income, expenses, isLoading }: SavingsCha
     );
   }
 
-  const savings = Math.max(0, income - expenses);
-  const savingsRate = income > 0 ? (savings / income) * 100 : 0;
+  const safeIncome = income ?? 0;
+  const safeExpenses = expenses ?? 0;
+  const savings = Math.max(0, safeIncome - safeExpenses);
+  const savingsRate = safeIncome > 0 ? (savings / safeIncome) * 100 : 0;
 
   const data = [
     { name: 'Savings', value: savings, color: '#10B981' },

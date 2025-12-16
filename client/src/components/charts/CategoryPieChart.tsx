@@ -69,7 +69,7 @@ export default function CategoryPieChart({ data, currency = 'USD' }: CategoryPie
             <div className="flex items-center gap-2">
               <span className="font-medium text-gray-900">{formatValue(item.value)}</span>
               <span className="text-gray-400 text-xs">
-                ({((item.value / total) * 100).toFixed(0)}%)
+                ({total > 0 ? ((item.value / total) * 100).toFixed(0) : 0}%)
               </span>
             </div>
           </div>

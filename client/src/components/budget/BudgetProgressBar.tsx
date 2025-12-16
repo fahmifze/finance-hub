@@ -48,7 +48,7 @@ export default function BudgetProgressBar({
         <span className={`text-sm font-medium ${
           isOverBudget ? 'text-red-600' : isWarning ? 'text-yellow-600' : 'text-green-600'
         }`}>
-          {percentage.toFixed(1)}% used
+          {(percentage ?? 0).toFixed(1)}% used
         </span>
         <span className="text-sm text-gray-500">
           {formatCurrency(budget - spent)} remaining

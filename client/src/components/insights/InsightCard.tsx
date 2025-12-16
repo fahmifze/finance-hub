@@ -32,8 +32,9 @@ export default function InsightCard({ insight }: InsightCardProps) {
   };
 
   const formatChange = (change: number) => {
-    const sign = change >= 0 ? '+' : '';
-    return `${sign}${change.toFixed(1)}%`;
+    const safeChange = change ?? 0;
+    const sign = safeChange >= 0 ? '+' : '';
+    return `${sign}${safeChange.toFixed(1)}%`;
   };
 
   return (
