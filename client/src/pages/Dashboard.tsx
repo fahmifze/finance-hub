@@ -116,8 +116,8 @@ export default function Dashboard() {
                       <p className="font-bold text-gray-900 dark:text-white">{code}</p>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
                         {currency === 'USD'
-                          ? rate.toFixed(code === 'JPY' || code === 'INR' ? 2 : 4)
-                          : userRate.toFixed(code === 'JPY' || code === 'INR' ? 2 : 4)
+                          ? (rate ?? 0).toFixed(code === 'JPY' || code === 'INR' ? 2 : 4)
+                          : (userRate ?? 0).toFixed(code === 'JPY' || code === 'INR' ? 2 : 4)
                         }
                       </p>
                     </div>
