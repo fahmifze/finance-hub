@@ -1,6 +1,7 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { CategoryBreakdown } from '../../types/expense.types';
 import { formatCurrency, convertCurrency } from '../../utils/formatters';
+import { useTheme } from '../../context/ThemeContext';
 
 interface CategoryPieChartProps {
   data: CategoryBreakdown[];
@@ -8,6 +9,7 @@ interface CategoryPieChartProps {
 }
 
 export default function CategoryPieChart({ data, currency = 'USD' }: CategoryPieChartProps) {
+  const { isDark } = useTheme();
   const formatValue = (value: number) => formatCurrency(value, currency, true);
 
   const chartData = data.map((item) => ({
@@ -18,13 +20,17 @@ export default function CategoryPieChart({ data, currency = 'USD' }: CategoryPie
 
   if (chartData.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64 text-gray-500">
+      <div className={`flex items-center justify-center h-64 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
         No expenses this month
       </div>
     );
   }
 
   const total = chartData.reduce((sum, item) => sum + item.value, 0);
+
+  const tooltipBg = isDark ? '#1F2937' : '#FFFFFF';
+  const tooltipBorder = isDark ? '#374151' : '#E5E7EB';
+  const textColor = isDark ? '#9CA3AF' : '#6B7280';
 
   return (
     <div className="flex flex-col items-center">
@@ -46,11 +52,12 @@ export default function CategoryPieChart({ data, currency = 'USD' }: CategoryPie
           <Tooltip
             formatter={(value: number) => [formatValue(value), 'Amount']}
             contentStyle={{
-              backgroundColor: '#fff',
-              border: '1px solid #E5E7EB',
+              backgroundColor: tooltipBg,
+              border: `1px solid ${tooltipBorder}`,
               borderRadius: '8px',
               boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
             }}
+            labelStyle={{ color: textColor }}
           />
         </PieChart>
       </ResponsiveContainer>
@@ -64,11 +71,11 @@ export default function CategoryPieChart({ data, currency = 'USD' }: CategoryPie
                 className="w-3 h-3 rounded-full"
                 style={{ backgroundColor: item.color }}
               />
-              <span className="text-gray-600 truncate max-w-[120px]">{item.name}</span>
+              <span className={`truncate max-w-[120px] ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{item.name}</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-medium text-gray-900">{formatValue(item.value)}</span>
-              <span className="text-gray-400 text-xs">
+              <span className={`font-medium ${isDark ? 'text-white' : 'text-gray-900'}`}>{formatValue(item.value)}</span>
+              <span className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
                 ({total > 0 ? ((item.value / total) * 100).toFixed(0) : 0}%)
               </span>
             </div>

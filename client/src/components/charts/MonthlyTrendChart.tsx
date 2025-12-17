@@ -9,6 +9,7 @@ import {
 } from 'recharts';
 import { MonthlyTrendData } from '../../types/expense.types';
 import { formatCurrency, convertCurrency } from '../../utils/formatters';
+import { useTheme } from '../../context/ThemeContext';
 
 interface MonthlyTrendChartProps {
   data: MonthlyTrendData[];
@@ -16,6 +17,8 @@ interface MonthlyTrendChartProps {
 }
 
 export default function MonthlyTrendChart({ data, currency = 'USD' }: MonthlyTrendChartProps) {
+  const { isDark } = useTheme();
+
   // Convert data to display currency
   const chartData = data.map((item) => ({
     name: item.month,
@@ -26,11 +29,16 @@ export default function MonthlyTrendChart({ data, currency = 'USD' }: MonthlyTre
 
   if (chartData.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64 text-gray-500">
+      <div className={`flex items-center justify-center h-64 ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
         No data available
       </div>
     );
   }
+
+  const gridColor = isDark ? '#374151' : '#E5E7EB';
+  const textColor = isDark ? '#9CA3AF' : '#6B7280';
+  const tooltipBg = isDark ? '#1F2937' : '#FFFFFF';
+  const tooltipBorder = isDark ? '#374151' : '#E5E7EB';
 
   return (
     <ResponsiveContainer width="100%" height={300}>
@@ -41,27 +49,28 @@ export default function MonthlyTrendChart({ data, currency = 'USD' }: MonthlyTre
             <stop offset="95%" stopColor="#6366F1" stopOpacity={0} />
           </linearGradient>
         </defs>
-        <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+        <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
         <XAxis
           dataKey="name"
           axisLine={false}
           tickLine={false}
-          tick={{ fill: '#6B7280', fontSize: 12 }}
+          tick={{ fill: textColor, fontSize: 12 }}
         />
         <YAxis
           axisLine={false}
           tickLine={false}
-          tick={{ fill: '#6B7280', fontSize: 12 }}
+          tick={{ fill: textColor, fontSize: 12 }}
           tickFormatter={(value) => formatValue(value)}
         />
         <Tooltip
           formatter={(value: number) => [formatValue(value), 'Total']}
           contentStyle={{
-            backgroundColor: '#fff',
-            border: '1px solid #E5E7EB',
+            backgroundColor: tooltipBg,
+            border: `1px solid ${tooltipBorder}`,
             borderRadius: '8px',
             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
           }}
+          labelStyle={{ color: textColor }}
         />
         <Area
           type="monotone"
