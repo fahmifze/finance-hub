@@ -5,11 +5,11 @@
 --           News, Stocks, Crypto
 -- ============================================
 
-CREATE DATABASE IF NOT EXISTS expense_tracker
+CREATE DATABASE IF NOT EXISTS finance_hub
 CHARACTER SET utf8mb4
 COLLATE utf8mb4_unicode_ci;
 
-USE expense_tracker;
+USE finance_hub;
 
 -- Drop tables if they exist (for clean setup)
 -- Drop in reverse order of dependencies

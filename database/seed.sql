@@ -3,7 +3,7 @@
 -- ============================================
 -- Password: password123 (hashed with bcrypt)
 
-USE expense_tracker;
+USE finance_hub;
 
 -- Insert demo user
 -- Password is 'password123' hashed with bcrypt (10 rounds)

@@ -4,6 +4,7 @@ node_modules/
 # Build outputs
 dist/
 build/
+target/
 
 # Environment files
 .env
@@ -15,10 +16,12 @@ build/
 .vscode/
 *.swp
 *.swo
+*.iml
 
 # OS
 .DS_Store
 Thumbs.db
+nul
 
 # Logs
 logs/
@@ -31,3 +34,14 @@ coverage/
 # Misc
 *.tsbuildinfo
 .cache/
+
+# Claude Code
+.claude/
+
+# Java/Spring
+*.class
+*.jar
+*.war
+.mvn/
+mvnw
+mvnw.cmd

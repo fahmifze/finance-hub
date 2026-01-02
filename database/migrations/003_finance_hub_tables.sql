@@ -3,7 +3,7 @@
 -- Run this to add News, Stocks, and Crypto tables
 -- ============================================
 
-USE expense_tracker;
+USE finance_hub;
 
 -- ============================================
 -- Table: saved_articles (Financial News)

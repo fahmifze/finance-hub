@@ -3,12 +3,12 @@
 -- Run this on existing database to add new tables
 -- ============================================
 
-USE expense_tracker;
+USE finance_hub;
 
 -- ============================================
 -- Add new columns to users table (ignore if already exist)
 -- ============================================
-SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'expense_tracker' AND TABLE_NAME = 'users' AND COLUMN_NAME = 'language');
+SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'finance_hub' AND TABLE_NAME = 'users' AND COLUMN_NAME = 'language');
 SET @sql = IF(@col_exists = 0, 'ALTER TABLE users ADD COLUMN language VARCHAR(10) DEFAULT "en" AFTER currency', 'SELECT "Column language already exists"');
 PREPARE stmt FROM @sql;
 EXECUTE stmt;
